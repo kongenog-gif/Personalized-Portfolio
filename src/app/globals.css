@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --primary: #3b82f6;
+  --secondary: #1e293b;
+  --accent: #8b5cf6;
+  --muted: #4b5563;
+
+  /* Tailwind CSS v4 automatic color tokens */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+
+  --transition-speed: 0.8s;
+  --transition-ease: [0.16, 1, 0.3, 1];
+}
+
+body {
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.theme-transition-base {
+  clip-path: circle(0% at var(--mouse-x, 50%) var(--mouse-y, 50%));
+}
+
+.theme-transition-active {
+  clip-path: circle(150% at var(--mouse-x, 50%) var(--mouse-y, 50%));
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  animation: theme-reveal 1s cubic-bezier(0.16, 1, 0.3, 1);
+  clip-path: circle(0% at var(--mouse-x, 50%) var(--mouse-y, 50%));
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0% at var(--mouse-x, 50%) var(--mouse-y, 50%));
+  }
+
+  to {
+    clip-path: circle(150% at var(--mouse-x, 50%) var(--mouse-y, 50%));
+  }
+}
+
+/* Exotic light theme variables will be handled via class-based theme or inline styles as requested */
+.light {
+  --background: #fdf2ff;
+  /* Very soft nebula pink/white */
+  --foreground: #2d1b4e;
+  /* Deep cosmic purple for text */
+  --primary: #6366f1;
+  /* Indigo star */
+  --secondary: #f3f0ff;
+  /* Lavender mist */
+  --accent: #d946ef;
+  /* Bright nebula pink */
+  --muted: #64748b;
+
+  /* High-vibrancy nebula blobs */
+  --nebula-purple: rgba(168, 85, 247, 0.15);
+  --nebula-blue: rgba(59, 130, 246, 0.12);
+  --nebula-pink: rgba(236, 72, 153, 0.12);
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    position: relative;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom animations and effects */
+@layer utilities {
+  .glassmorphism {
+    background-color: var(--background);
+    /* Use theme background variable */
+    opacity: 0.8;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.1);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+}
